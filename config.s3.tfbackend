@@ -1,0 +1,6 @@
+#
+# El bucket debe estar creado ANTES de ejecutar el terraform
+#
+profile = "DevOps"          # profile from .aws/config 
+bucket  = "test-demo-04"    # This is the bucket name (remember create bucket befor run terraform init)
+region  = "us-east-1"

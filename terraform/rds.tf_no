@@ -1,0 +1,93 @@
+module "rds_sg" {
+  source  = "terraform-aws-modules/security-group/aws"
+  version = "4.9.0"
+
+  name        = local.rds_db_name
+  description = "security group for RDS Database"
+  vpc_id      = module.vpc.vpc_id
+  ingress_with_source_security_group_id = [
+    {
+      from_port                = var.port
+      to_port                  = var.port
+      protocol                 = "tcp"
+      description              = "allow DB connections from EKS Worker Nodes"
+      source_security_group_id = module.eks_cluster.node_security_group_id
+    },
+  ]
+}
+
+
+module "rds_database" {
+  source                          = "terraform-aws-modules/rds/aws"
+  version                         = "~> 4.3.0"
+  identifier                      = local.rds_db_name
+  engine                          = var.engine
+  engine_version                  = var.engine_version
+  instance_class                  = var.instance_class
+  allocated_storage               = var.allocated_storage
+  storage_encrypted               = var.storage_encrypted
+  db_name                         = var.db_name
+  port                            = var.port
+  username                        = var.username
+  password                        = var.password
+  create_random_password          = var.create_random_password
+  create_db_subnet_group          = var.create_db_subnet_group
+  vpc_security_group_ids          = [module.rds_sg.security_group_id]
+  maintenance_window              = var.maintenance_window
+  backup_window                   = var.backup_window
+  multi_az                        = var.multi_az
+  enabled_cloudwatch_logs_exports = ["audit", "general"]
+  subnet_ids                      = module.vpc.private_subnets
+  family                          = var.family
+  major_engine_version            = var.major_engine_version
+  //snapshot_identifier           = "snapshot-${local.rds_db_name}"
+  //copy_tags_to_snapshot         = true
+  deletion_protection             = var.deletion_protection
+  backup_retention_period         = 7
+  tags                            = local.common_tags
+
+  parameters = [{
+    name  = "character_set_client"
+    value = "utf8"
+    }, {
+    name  = "character_set_server"
+    value = "utf8"
+  }]
+
+  options = [{
+    option_name = "MARIADB_AUDIT_PLUGIN"
+    option_settings = [{
+      name  = "SERVER_AUDIT_EVENTS"
+      value = "CONNECT"
+      }, {
+      name  = "SERVER_AUDIT_FILE_ROTATIONS"
+      value = "37"
+    }, ]
+  }, ]
+
+  timeouts = {
+    "create" : "50m",
+    "delete" : "50m",
+    "update" : "90m"
+  }
+}
+
+
+output "name" {
+  value = ""
+}
+
+output "rds_db_instance_address" {
+  value       = module.rds_database.db_instance_address
+  description = "The address of the RDS instance."
+}
+
+output "rds_db_instance_endpoint" {
+  value       = module.rds_database.db_instance_endpoint
+  description = "The connection endpoint."
+}
+
+output "db_instance_port" {
+  value       = module.rds_database.db_instance_port
+  description = "The database port."
+}
