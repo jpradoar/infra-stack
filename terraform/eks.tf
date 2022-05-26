@@ -34,8 +34,8 @@ module "eks_cluster" {
     ami_type      = var.ami_type
     taints        = []
     capacity_type = lookup(var.capacity_type, terraform.workspace)
-    
-    security_group_rules = { # To comunicate between nodes (without it metrics servers do not works)
+
+    security_group_rules = {
         egress_all = {
           description      = "Egress All"
           from_port        = 0
@@ -52,13 +52,17 @@ module "eks_cluster" {
           cidr_blocks      = ["0.0.0.0/0"] 
           type             = "ingress"
         }
-      }    
+      }
+
   }
 
 
   eks_managed_node_groups = {
     node = {
       //version = "1.20"       # Enable if you only need upgrade control plane
+      name = local.eks_cluster_name
+      #use_name_prefix        = false          # avoid add terraform custom prefix
+      #aunch_template_use_name_prefix = false  # avoid add terraform custom prefix
       create_launch_template = var.create_launch_template
       min_size               = var.min_size
       desired_size           = var.desired_size
@@ -90,10 +94,11 @@ module "eks_cluster" {
       "k8s.io/cluster-autoscaler/enabled"                   = "true"
     }
   )
-
 }
 
 
 output "eks_cluster_name" {
   value = module.eks_cluster.cluster_id
 }
+
+
