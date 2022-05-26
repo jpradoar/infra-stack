@@ -20,8 +20,10 @@ curl -sL https://raw.githubusercontent.com/crossplane/crossplane/master/install.
 
 kubectl crossplane install configuration registry.upbound.io/xp/getting-started-with-aws-with-vpc:v1.8.0
 
-AWS_PROFILE=default && echo -e "[default]\naws_access_key_id = $(aws configure get aws_access_key_id --profile $AWS_PROFILE)\naws_secret_access_key = $(aws configure get aws_secret_access_key --profile $AWS_PROFILE)" > creds.conf
-
+### Create config
+<pre>
+  AWS_PROFILE=default && echo -e "[default]\naws_access_key_id = $(aws configure get aws_access_key_id --profile $AWS_PROFILE)\naws_secret_access_key = $(aws configure get aws_secret_access_key --profile $AWS_PROFILE)" > creds.conf
+</pre>
 
 kubectl create secret generic aws-creds -n crossplane-system --from-file=creds=./creds.conf
 
