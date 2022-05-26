@@ -34,6 +34,25 @@ module "eks_cluster" {
     ami_type      = var.ami_type
     taints        = []
     capacity_type = lookup(var.capacity_type, terraform.workspace)
+    
+    security_group_rules = { # To comunicate between nodes (without it metrics servers do not works)
+        egress_all = {
+          description      = "Egress All"
+          from_port        = 0
+          to_port          = 0
+          protocol         = "-1"
+          cidr_blocks      = ["0.0.0.0/0"]
+          type             = "egress"
+        }
+        ingress_all = {
+          description      = "Ingress All"
+          from_port        = 0
+          to_port          = 0
+          protocol         = "-1"
+          cidr_blocks      = ["0.0.0.0/0"] 
+          type             = "ingress"
+        }
+      }    
   }
 
 
