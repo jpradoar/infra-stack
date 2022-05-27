@@ -36,23 +36,23 @@ module "eks_cluster" {
     capacity_type = lookup(var.capacity_type, terraform.workspace)
 
     security_group_rules = {
-        egress_all = {
-          description      = "Egress All"
-          from_port        = 0
-          to_port          = 0
-          protocol         = "-1"
-          cidr_blocks      = ["0.0.0.0/0"]
-          type             = "egress"
-        }
-        ingress_all = {
-          description      = "Ingress All"
-          from_port        = 0
-          to_port          = 0
-          protocol         = "-1"
-          cidr_blocks      = ["0.0.0.0/0"] 
-          type             = "ingress"
-        }
+      egress_all = {
+        description = "Egress All"
+        from_port   = 0
+        to_port     = 0
+        protocol    = "-1"
+        cidr_blocks = ["0.0.0.0/0"]
+        type        = "egress"
       }
+      ingress_all = {
+        description = "Ingress All"
+        from_port   = 0
+        to_port     = 0
+        protocol    = "-1"
+        cidr_blocks = ["0.0.0.0/0"]
+        type        = "ingress"
+      }
+    }
 
   }
 

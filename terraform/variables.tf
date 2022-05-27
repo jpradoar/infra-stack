@@ -67,13 +67,13 @@ variable "flow_log_max_aggregation_interval" { default = "60" }
 
 #------------------------- EKS --------------------------------
 
-variable "cluster_version" { default = "1.20" } # "Unsupported Kubernetes minor version update from 1.20 to 1.22"
+variable "cluster_version" { default = "1.22" } # "Unsupported Kubernetes minor version update from 1.20 to 1.22"
 variable "ami_type" { default = "AL2_x86_64" }
 variable "instance_types" { default = ["m5.xlarge"] }
 variable "create_launch_template" { default = true }
-variable "min_size" { default = "1" }
-variable "desired_size" { default = "2" }
-variable "max_size" { default = "3" }
+variable "min_size" { default = "3" }
+variable "desired_size" { default = "4" }
+variable "max_size" { default = "5" }
 variable "disk_size" { default = "160" }
 variable "disk_type" { default = "gp3" }
 variable "disk_iops" { default = "3000" }
