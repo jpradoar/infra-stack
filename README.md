@@ -97,8 +97,24 @@ ec2-base.tf  (data "aws_ami" "aws_ami_type")
 <img src="img/slack-msg.png" >
 provisioning/user_data.sh
 
+<br><br><br>
+
+
+
+### Continuous integration: Jenkins
+<a href="https://github.com/jpradoar/infra-stack/tree/main/jenkins"> Jenkins readme</a>
+
+
+
 <br>
 
+### Continuous deployment: ArgoCD
+<a href="https://github.com/jpradoar/infra-stack/tree/main/argocd"> ArgoCD readme</a>
+
+
+
+
+<br><br><br>
 
 
 
