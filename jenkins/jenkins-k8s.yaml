@@ -250,7 +250,9 @@ controller:
     - cloudbees-folder:6.722.v8165b_a_cf25e9
     - google-login:1.6
     - google-oauth-plugin:1.0.6
-
+    - ec2:1.68 # https://plugins.jenkins.io/ec2/
+    - ec2-fleet:2.5.1 # https://aws.amazon.com/blogs/compute/cost-optimize-your-jenkins-ci-cd-pipelines-using-ec2-spot-instances/
+    - prometheus:2.0.11
 
 
   # Set to false to download the minimum required version of all dependencies.

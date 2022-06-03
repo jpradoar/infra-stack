@@ -51,10 +51,29 @@ variable "ifecr" { default = false }
 #------------------------- VPC --------------------------------
 
 
-variable "cidr" { default = "10.10.0.0/20" }
+variable "cidr" { default = "10.0.0.0/16" }
 variable "azs" { default = ["us-east-1a", "us-east-1b", "us-east-1c"] }
-variable "private_subnets" { default = ["10.10.10.0/24", "10.10.11.0/24", "10.10.12.0/24"] }
-variable "public_subnets" { default = ["10.10.0.0/24", "10.10.1.0/24", "10.10.2.0/24"] }
+
+#variable "private_subnets" { default = ["10.10.10.0/24", "10.10.11.0/24", "10.10.12.0/24"] }
+variable "private_subnets" { # Used in eks.tf#L36
+  type = map(any)
+  default = {
+    default = ["10.10.10.0/24", "10.10.11.0/24", "10.10.12.0/24"] # use: terraform workspace default
+    dev     = ["10.20.10.0/24", "10.20.11.0/24", "10.20.12.0/24"] # use: terraform workspace dev
+    prod    = ["10.30.10.0/24", "10.30.11.0/24", "10.30.12.0/24"] # use: terraform workspace prod
+  }
+}
+
+#variable "public_subnets" { default = ["10.10.0.0/24", "10.10.1.0/24", "10.10.2.0/24"] }
+variable "public_subnets" {
+  type = map(any)
+  default = {
+    default = ["10.110.10.0/24", "10.110.11.0/24", "10.110.12.0/24"] # use: terraform workspace default
+    dev     = ["10.120.10.0/24", "10.120.11.0/24", "10.120.12.0/24"] # use: terraform workspace dev
+    prod    = ["10.130.10.0/24", "10.130.11.0/24", "10.130.12.0/24"] # use: terraform workspace prod
+  }
+}
+
 variable "enable_nat_gateway" { default = true }
 variable "single_nat_gateway" { default = true }
 variable "one_nat_gateway_per_az" { default = true }
@@ -69,14 +88,35 @@ variable "flow_log_max_aggregation_interval" { default = "60" }
 
 variable "cluster_version" { default = "1.22" } # "Unsupported Kubernetes minor version update from 1.20 to 1.22"
 variable "ami_type" { default = "AL2_x86_64" }
-variable "instance_types" { default = ["m5.xlarge"] }
+
+#variable "instance_types" { default = ["m5.xlarge"] }
+variable "instance_types"
+  type = map(any)
+  default = {
+    default = ["t2.medium"] # use: terraform workspace default
+    dev     = ["t2.xlarge"]      # use: terraform workspace dev
+    prod    = ["m5.xlarge"] # use: terraform workspace prod
+  }
+}
+
+
 variable "create_launch_template" { default = true }
 variable "min_size" { default = "3" }
 variable "desired_size" { default = "4" }
 variable "max_size" { default = "5" }
 variable "disk_size" { default = "160" }
 variable "disk_type" { default = "gp3" }
-variable "disk_iops" { default = "3000" }
+
+#variable "disk_iops" { default = "3000" }
+variable "disk_iops" 
+  type = map(any)
+  default = {
+    default = "2000" # use: terraform workspace default
+    dev     = "1000" # use: terraform workspace dev
+    prod    = "3000" # use: terraform workspace prod
+  }
+}
+
 variable "disk_throughput" { default = "125" }
 variable "max_unavailable_percentage" { default = "20" }
 #
