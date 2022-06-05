@@ -88,18 +88,7 @@ variable "flow_log_max_aggregation_interval" { default = "60" }
 
 variable "cluster_version" { default = "1.22" } # "Unsupported Kubernetes minor version update from 1.20 to 1.22"
 variable "ami_type" { default = "AL2_x86_64" }
-
-#variable "instance_types" { default = ["m5.xlarge"] }
-variable "instance_types" {
-  type = map(any)
-  default = {
-    default = "t2.medium" # use: terraform workspace default
-    dev     = "t2.xlarge" # use: terraform workspace dev
-    prod    = "m5.xlarge" # use: terraform workspace prod
-  }
-}
-
-
+variable "instance_types" { default = ["m5.xlarge"] }
 variable "create_launch_template" { default = true }
 variable "min_size" { default = "3" }
 variable "desired_size" { default = "4" }
@@ -125,7 +114,7 @@ variable "max_unavailable_percentage" { default = "20" }
 variable "capacity_type" { # Used in eks.tf#L36
   type = map(any)
   default = {
-    default = "ON_DEMAND" # use: terraform workspace default
+    default = "SPOT"      # use: terraform workspace default
     dev     = "SPOT"      # use: terraform workspace dev
     prod    = "ON_DEMAND" # use: terraform workspace prod
   }

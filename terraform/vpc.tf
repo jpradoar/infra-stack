@@ -19,8 +19,8 @@ module "vpc" {
   name            = local.vpc_name
   cidr            = var.cidr
   azs             = var.azs
-  private_subnets = var.private_subnets
-  public_subnets  = var.public_subnets
+  private_subnets = lookup(var.private_subnets, terraform.workspace) # var.private_subnets
+  public_subnets  = lookup(var.public_subnets, terraform.workspace)  # var.public_subnets
 
   enable_nat_gateway     = var.enable_nat_gateway
   single_nat_gateway     = var.single_nat_gateway

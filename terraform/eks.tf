@@ -69,7 +69,7 @@ module "eks_cluster" {
       max_size               = var.max_size
       disk_size              = var.disk_size
       disk_type              = var.disk_type
-      disk_iops              = var.disk_iops
+      disk_iops              = lookup(var.disk_iops, terraform.workspace) # var.disk_iops
       disk_throughput        = var.disk_throughput
       instance_types         = var.instance_types
       update_config = {
