@@ -90,12 +90,12 @@ variable "cluster_version" { default = "1.22" } # "Unsupported Kubernetes minor 
 variable "ami_type" { default = "AL2_x86_64" }
 
 #variable "instance_types" { default = ["m5.xlarge"] }
-variable "instance_types"
+variable "instance_types" {
   type = map(any)
   default = {
-    default = ["t2.medium"] # use: terraform workspace default
-    dev     = ["t2.xlarge"]      # use: terraform workspace dev
-    prod    = ["m5.xlarge"] # use: terraform workspace prod
+    default = "t2.medium" # use: terraform workspace default
+    dev     = "t2.xlarge" # use: terraform workspace dev
+    prod    = "m5.xlarge" # use: terraform workspace prod
   }
 }
 
@@ -108,7 +108,7 @@ variable "disk_size" { default = "160" }
 variable "disk_type" { default = "gp3" }
 
 #variable "disk_iops" { default = "3000" }
-variable "disk_iops" 
+variable "disk_iops" {
   type = map(any)
   default = {
     default = "2000" # use: terraform workspace default
