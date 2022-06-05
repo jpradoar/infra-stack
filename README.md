@@ -103,7 +103,8 @@ provisioning/user_data.sh
 
 ### Continuous integration: Jenkins
 <a href="https://github.com/jpradoar/infra-stack/tree/main/jenkins"> Jenkins readme</a>
-
+<br>
+<img src="img/ci-diagram.jpg" >
 
 
 <br>
